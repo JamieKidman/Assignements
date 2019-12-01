@@ -213,13 +213,14 @@ int main(int argc, char *argv[])
     fp = fopen("simulation_log","w");
     fprintf(fp, "");
     pthread_t task_thread;
-  	pthread_t cpu_threads[4];
+    pthread_t cpu_threads[4];
 
-    // 
     if(max_queue_size <= 1)
-        return 0;
+        return 0; // Not great, should have a message, however wasn't allowed to add one
     if(max_queue_size >= 10)
-        return 0;
+        return 0; // Not great, should have a message, however wasn't allowed to add one
+ 
+
 
     // Creating Threads
     pthread_create(&task_thread, NULL, &task, &max_queue_size);
