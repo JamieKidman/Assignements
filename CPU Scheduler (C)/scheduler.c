@@ -203,32 +203,35 @@ void* cpu(void *incpuN)
 
 int main(int argc, char *argv[])
 {
+   if(argc != 3)
+    {
+        printf("Requires two command line inputs, task_file and size_of_queue in that order\n");
+        return 0;
+    }
+
     // Basic Initialisation
     int max_queue_size = atoi(argv[2]);
+    if(max_queue_size <= 1)
+        return 0;
+    
     task_file = argv[1];
-    task_file_maker(argv[1]);
+    task_file_maker();
     initQueue(&queue);
 
     FILE *fp;
     fp = fopen("simulation_log","w");
     fprintf(fp, "");
     pthread_t task_thread;
-    pthread_t cpu_threads[4];
-
-    if(max_queue_size <= 1)
-        return 0; // Not great, should have a message, however wasn't allowed to add one
-    if(max_queue_size >= 10)
-        return 0; // Not great, should have a message, however wasn't allowed to add one
- 
+  	pthread_t cpu_threads[4];
 
 
     // Creating Threads
     pthread_create(&task_thread, NULL, &task, &max_queue_size);
 
-	for (int i = 1; i < 4; i++) 
+    for (int i = 1; i < 4; i++) 
     {
 		pthread_create(&cpu_threads[i], NULL, &cpu, i);
-	}
+    }
 
     // Joining all the Threads
     pthread_join(task_thread, NULL);
